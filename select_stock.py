@@ -192,7 +192,7 @@ def merge_plots(df_clean: pd.DataFrame, security_id: str):
 
 
 if __name__ == "__main__":
-    root_dir = r'D:\研究生课\cs277\project\上证信息数据2024\his_sh1_201907-202406'
+    root_dir = r'C:\Users\Zed\Desktop\shtu\4-1\CS277\proj-code\his_sh1_201907-202406'
     df_raw = load_all_dayk(root_dir)
     df_clean = clean_dayk(df_raw)
 

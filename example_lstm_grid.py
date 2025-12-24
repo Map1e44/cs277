@@ -16,7 +16,8 @@ mpl.rcParams['axes.unicode_minus'] = False
 from data_clean import load_all_dayk, clean_dayk
 from grid import (
     get_price_series, run_grid_backtest, 
-    calculate_performance_metrics, print_performance_report
+    calculate_performance_metrics, print_performance_report,
+    buy_and_hold_backtest
 )
 
 try:
@@ -36,13 +37,13 @@ def main():
     print("="*60)
     print("\n正在加载数据...")
     
-    root_dir = r'D:\研究生课\cs277\my-grid\上证信息数据2024\his_sh1_201907-202406'
+    root_dir = r'C:\Users\Zed\Desktop\shtu\4-1\CS277\proj-code\his_sh1_201907-202406'
     df_raw = load_all_dayk(root_dir)
     df_clean = clean_dayk(df_raw)
     print("✓ 数据加载完成")
 
     # 2. 参数设置
-    security_id = "000008"
+    security_id = "000004"
     start_date = "2020-01-01"
     end_date = "2024-06-20"
     total_capital = 100000.0
@@ -116,6 +117,9 @@ def main():
     metrics_ml = calculate_performance_metrics(equity_ml_simple, trades_ml, price_backtest)
     metrics_fixed = calculate_performance_metrics(equity_fixed, trades_fixed, price_backtest)
     
+    price_df_backtest = get_price_series(df_clean, security_id, backtest_start, backtest_end)
+    equity_bh = buy_and_hold_backtest(price_df_backtest, total_capital=total_capital)
+
     print_performance_report(metrics_ml, f"{security_id} - LSTM智能网格")
     print_performance_report(metrics_fixed, f"{security_id} - 固定网格")
     
@@ -151,6 +155,8 @@ def main():
                     label='固定网格', linewidth=2, alpha=0.8)
     axes[0, 0].plot(equity_ml['Date'], equity_ml['Equity'], 
                     label='LSTM智能', linewidth=2, alpha=0.8)
+    axes[0, 0].plot(equity_bh["Date"], equity_bh["Equity"], 
+                    label="Buy & Hold", linewidth=2,alpha=0.8)
     axes[0, 0].set_xlabel('日期')
     axes[0, 0].set_ylabel('资产 (¥)')
     axes[0, 0].set_title('资产曲线对比')

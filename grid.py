@@ -599,11 +599,11 @@ def plot_step_performance(result_df: pd.DataFrame):
 
 if __name__ == "__main__":
     # ===== 数据加载 =====
-    root_dir = r'D:\研究生课\cs277\my-grid\上证信息数据2024\his_sh1_201907-202406'
+    root_dir = r'C:\Users\Zed\Desktop\shtu\4-1\CS277\proj-code\his_sh1_201907-202406'
     df_raw = load_all_dayk(root_dir)
     df_clean = clean_dayk(df_raw)
 
-    security_id = "000008" 
+    security_id = "601288" 
     total_capital = 100000.0
 
     # ===== 重要：避免前视偏差的正确做法 =====

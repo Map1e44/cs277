@@ -86,7 +86,7 @@ from data_clean import load_all_dayk, clean_dayk
 from select_stock import compute_stock_metrics, select_grid_candidates
 from grid import get_price_series, suggest_grid_step, run_grid_backtest, calculate_performance_metrics
 
-root_dir = r'D:\研究生课\cs277\my-grid\上证信息数据2024\his_sh1_201907-202406'
+root_dir = r'C:\Users\Zed\Desktop\shtu\4-1\CS277\proj-code\his_sh1_201907-202406'
 df_raw = load_all_dayk(root_dir)
 df_clean = clean_dayk(df_raw)
 

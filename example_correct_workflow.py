@@ -14,13 +14,13 @@ from grid import (
 def main():
     # 1. 数据加载与清洗
     print("正在加载数据...")
-    root_dir = r'D:\研究生课\cs277\my-grid\上证信息数据2024\his_sh1_201907-202406'
+    root_dir = r'C:\Users\Zed\Desktop\shtu\4-1\CS277\proj-code\his_sh1_201907-202406'
     df_raw = load_all_dayk(root_dir)
     df_clean = clean_dayk(df_raw)
     print("✓ 数据加载完成")
 
     # 2. ===== 关键：时间分割，避免前视偏差 =====
-    security_id = "000008"  # 你手动指定的股票
+    security_id = "601288"  # 你手动指定的股票
     
     # 选股期（用于确定策略参数）
     selection_start = "2020-01-01"

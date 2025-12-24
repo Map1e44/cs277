@@ -18,7 +18,8 @@ from data_clean import load_all_dayk, clean_dayk
 from grid import (
     get_price_series, suggest_grid_step, suggest_grid_step_atr,
     run_grid_backtest, run_adaptive_atr_grid_backtest,
-    calculate_performance_metrics, print_performance_report
+    calculate_performance_metrics, print_performance_report,
+    buy_and_hold_backtest
 )
 
 # 配置matplotlib中文字体，避免乱码
@@ -30,13 +31,13 @@ mpl.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
 def main():
     # 1. 数据加载与清洗
     print("正在加载数据...")
-    root_dir = r'D:\研究生课\cs277\my-grid\上证信息数据2024\his_sh1_201907-202406'
+    root_dir = r'C:\Users\Zed\Desktop\shtu\4-1\CS277\proj-code\his_sh1_201907-202406'
     df_raw = load_all_dayk(root_dir)
     df_clean = clean_dayk(df_raw)
     print("✓ 数据加载完成")
 
     # 2. ===== 关键：时间分割，避免前视偏差 =====
-    security_id = "000008"  # 测试股票
+    security_id = "601988"  # 测试股票
     
     # 选股期（用于确定策略参数）
     selection_start = "2019-11-13"
@@ -126,7 +127,9 @@ def main():
     equity_atr_simple = equity_atr[["Date", "ClosePrice", "Cash", "Position", "Equity"]]
     metrics_atr = calculate_performance_metrics(equity_atr_simple, trades_atr, price_backtest)
     print_performance_report(metrics_atr, f"{security_id} - ATR自适应")
-    
+
+    price_df_backtest = get_price_series(df_clean, security_id, backtest_start, backtest_end)
+    equity_bh = buy_and_hold_backtest(price_df_backtest, total_capital=total_capital)
     # 5. 策略对比总结
     print("\n" + "="*60)
     print("策略对比总结")
@@ -158,6 +161,8 @@ def main():
                     label="固定网格", linewidth=2)
     axes[0, 0].plot(equity_atr["Date"], equity_atr["Equity"], 
                     label="ATR自适应", linewidth=2, alpha=0.8)
+    axes[0, 0].plot(equity_bh["Date"], equity_bh["Equity"], 
+                    label="Buy & Hold", linewidth=2)
     axes[0, 0].set_xlabel("日期")
     axes[0, 0].set_ylabel("资产 (¥)")
     axes[0, 0].set_title("资产曲线对比")
